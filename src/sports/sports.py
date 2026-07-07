@@ -4,10 +4,13 @@ from src.disciplines.dicipline import generateTableDescipline
 from src.postions.positions import generateLogicPostions
 from src.participants.particpants import readExecl
 from src.utils.helper import base_query_table
+from src.competion_participant.competion_participant import competion_participant
 
 list_disiplines_to_insert = []
 list_sports_to_insert = []
-list_ids_disiplines = []
+list_ids_disciplines = []
+list_postions_id = []
+lists_disiplines = {}
 
 def generateTableSports():
     columnas_sql = [
@@ -176,22 +179,21 @@ def generarScript():
 
 
         for discipline in desiplines:
-            discipline_id = str(uuid.uuid4())
+            position_id = str(uuid.uuid4())
             descipline_insert=(
-                f"({sql_value(discipline_id)}, "
+                f"({sql_value(position_id)}, "
                 f"{sql_value(discipline)}, "
                 f"{sql_value(sport_id)}, "
                 f"'2026-07-02 23:22:31.327+00', "
                 f"'2026-07-02 23:22:31.327+00', "
                 f"{sql_value('')})" 
             )
-            list_ids_disiplines.append(discipline_id)
+            lists_disiplines[discipline] = position_id
+            list_ids_disciplines.append(position_id)
             list_disiplines_to_insert.append(descipline_insert)
 
     generateTableSports()
     generateTableDescipline(list_disciplines=list_disiplines_to_insert)
-    generateLogicPostions(list_ids_disiplines)
-
-    readExecl()
-
-
+    list_postions_id = generateLogicPostions(list_ids_disciplines)
+    listparticpants = readExecl()
+    competion_participant("23cb78ff-8c87-4ada-81d2-9b641593815d",listparticpants , list_postions_id ,lists_disiplines)

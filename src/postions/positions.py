@@ -2,6 +2,7 @@ import uuid
 from src.utils.sql_validatiion import sql_value
 from src.utils.helper import base_query_table
 list_postions = []
+list_postions_ids = []
 
 
 def generateLogicPostions(list_disciplines_ids):
@@ -18,7 +19,9 @@ def generateLogicPostions(list_disciplines_ids):
                 f"{sql_value('')})" 
             )
             list_postions.append(position_insert)
+            list_postions_ids.append({"position_id":postion_id ,"desiplina_id":discipline_id , "name_position":name_position})
     generateTablePositions()
+    return list_postions_ids
 
 def generateTablePositions():
     columnas_sql = [

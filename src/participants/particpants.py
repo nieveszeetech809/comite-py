@@ -6,22 +6,35 @@ from src.utils.sql_validatiion import sql_value
 from src.athletes.athleta import generateTableAthletes ,generate_athletes
 from src.utils.helper import base_query_table
 
-
 lista_errores = []
 lista_valores_atletas = []
+listParticipants= []
+
+
 
 mapSizePants = {
     "2XS": "XXS",
     "XS": "XS",
+    "XCH": "XS",
     "S": "S",
+    "CH": "S",
     "M": "M",
     "L": "L",
+    "G": "L",
     "XL": "XL",
+    "XG": "XG",
     "2XL": "XXL",
+    "2XG": "XXL",
+    "XXG": "XXL",
     "XXL":"XXL",
     "3XL": "XXXL",
+    "3XG": "XXXL",
     "XXXL":"XXXL",
+    "XXXG":"XXXL",
     "4XL": "XXXXL", 
+    "4XG": "XXXXL", 
+    "XXXXL":"XXXXL",
+    "XXXXG":"XXXXG",
 }
 
 
@@ -37,7 +50,7 @@ mapUuid = {
     "Veterinario": "02ecab16-a8a0-4392-9a41-516e3370b46b",
     "Caballerango": "6ebc0472-a22c-415f-8fab-72a53baf5138"
 }
-
+listParticipants = []
 
 def readExecl():
     list_participants = []
@@ -50,35 +63,22 @@ def readExecl():
         return
 
 
-    # print("Leyendo el archivo Excel...")
     df = pd.read_excel('partcipants.xlsx')
     df = df.fillna('')
 
     df_mails = pd.read_excel('mails.xlsx')
     df_mails = df_mails.fillna('')
 
-    # 
-    # df_filtrado = df_mails.iloc[:, [0, 1]]
-    # df_filtrado.columns = ['nombre', 'correo']
-    # list_mails = df_filtrado.to_dict(orient='records')
-
-    # 2. Obtener los nombres reales de las columnas por su posición numérica
     col_nombre = df_mails.columns[0]
     col_correo = df_mails.columns[1]
 
-# 3. Crear el diccionario {Nombre: Correo} directo
     diccionario_contactos = dict(zip(df_mails[col_nombre], df_mails[col_correo]))
-    # print(diccionario_contactos)
-
-
     def findEmail(name):
         email = diccionario_contactos.get(name)
         if email:
             return email
         else:
             return 'contacto@zeetech.com.mx'
-
-
 
     for index, row in df.iterrows():
         user_id = str(uuid.uuid4())
@@ -88,6 +88,7 @@ def readExecl():
         type_participant = str(row.iloc[3]).strip()
         get_pants_size =  str(row.iloc[5]).strip()
         get_foot_size =  str(row.iloc[6]).strip()
+        get_displine =  str(row.iloc[8]).strip()
         email =  findEmail(nombre_completo.upper())
         first_name, last_name = split_full_name(nombre_completo)
         age = str(row.iloc[4]).strip()
@@ -109,7 +110,7 @@ def readExecl():
 
         if type_participant == "Deportista":
             generate_athletes(lista_valores_atletas, user_id)
-
+        listParticipants.append({"user_id":user_id, "desiplina":get_displine.upper() ,"type":type_participant.upper()})
         user_insert = (
             f"({sql_value(user_id)}, "
             f"{sql_value(first_name)}, "
@@ -126,13 +127,9 @@ def readExecl():
         )
 
         list_participants.append(user_insert)
-        
-
-
-
-    generateTableAthletes( list_athletes=lista_valores_atletas)
+    generateTableAthletes(list_athletes=lista_valores_atletas)
     generateTableParticipants(list_participants=list_participants)
-
+    return listParticipants
 
 def generateTableParticipants(list_participants):
     columnas_sql = [
@@ -150,6 +147,6 @@ def generateTableParticipants(list_participants):
         '"deletedAt"'
     ]
     insert_query = base_query_table("Participants", columnas_sql ,list_participants)
-    
     with open("participants.sql", 'w', encoding='utf-8') as f:
         f.write(insert_query)
+
