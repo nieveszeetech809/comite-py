@@ -83,8 +83,8 @@ def readExecl():
     for index, row in df.iterrows():
         user_id = str(uuid.uuid4())
         nombre_completo = str(row.iloc[0]).strip()
-        masculino = str(row.iloc[1]).strip()
-        femenino = str(row.iloc[2]).strip()
+        masculino =clean_number(str(row.iloc[1]).strip())
+        femenino = clean_number(str(row.iloc[2]).strip())
         type_participant = str(row.iloc[3]).strip()
         get_pants_size =  str(row.iloc[5]).strip()
         get_foot_size =  str(row.iloc[6]).strip()
@@ -94,10 +94,12 @@ def readExecl():
         age = str(row.iloc[4]).strip()
         born_date = age_to_birthdate(age)
 
+
+
         gender = 'male'
-        if masculino == '1':
+        if masculino == 1:
             gender = 'male'
-        if femenino == '1':
+        if femenino == 1:
             gender = 'female'
 
         pants_size = mapSizePants.get(get_pants_size,"")
