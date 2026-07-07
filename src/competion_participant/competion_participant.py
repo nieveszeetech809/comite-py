@@ -8,15 +8,15 @@ def competion_participant(competion_id , participants_list , list_postions_id ,l
         user_id = participant['user_id']
         disciplina = participant['desiplina']
         tipo = participant['type']
-        if tipo == 'Deportista':
-            tipo = 'GENERAL'
+        if tipo == 'Deportista' or tipo == 'Caballerango' or tipo == 'Veterinario' or tipo == 'Oficial Técnico' or tipo == 'Técnico Embarcaciones' or 'Técnico Mecánico':
+            tipo = 'GENERAL' 
 
         disciplina_id = lists_disiplines.get(disciplina) 
-        position_id = ''
+        position_id = '' 
         posicion_encontrada = next(
             (p for p in list_postions_id 
             if p['desiplina_id'] == disciplina_id 
-            and p['name_position'] == tipo), 
+            and p['name_position'] == tipo.upper()), 
             None
         )
         if not posicion_encontrada:
