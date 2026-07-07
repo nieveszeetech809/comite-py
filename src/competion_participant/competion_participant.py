@@ -8,20 +8,21 @@ def competion_participant(competion_id , participants_list , list_postions_id ,l
         user_id = participant['user_id']
         disciplina = participant['desiplina']
         tipo = participant['type']
+        if tipo == 'Deportista':
+            tipo = 'GENERAL'
 
         disciplina_id = lists_disiplines.get(disciplina) 
         position_id = ''
         posicion_encontrada = next(
             (p for p in list_postions_id 
             if p['desiplina_id'] == disciplina_id 
-            and p['name_position'] == "GENERAL"), 
+            and p['name_position'] == tipo), 
             None
         )
         if not posicion_encontrada:
             continue
 
         position_id = posicion_encontrada['position_id']
-
         competion_participant_id = str(uuid.uuid4())
         competions_participant_insert=(
                 f"({sql_value(competion_participant_id)}, "
