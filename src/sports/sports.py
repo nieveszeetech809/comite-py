@@ -1,3 +1,4 @@
+import questionary
 import uuid
 from src.utils.sql_validatiion import sql_value
 from src.disciplines.dicipline import generateTableDescipline
@@ -195,5 +196,10 @@ def generarScript():
     generateTableSports()
     generateTableDescipline(list_disciplines=list_disiplines_to_insert)
     list_postions_id = generateLogicPostions(list_ids_disciplines)
+    
     listparticpants = readExecl()
-    competion_participant("23cb78ff-8c87-4ada-81d2-9b641593815d",listparticpants , list_postions_id ,lists_disiplines)
+    ask_generate_competions_participant = questionary.confirm("Are you need integrate competition?").ask()
+    if ask_generate_competions_participant:
+        # 23cb78ff-8c87-4ada-81d2-9b641593815d
+        competition_id = questionary.text("What's the competion_id").ask()
+        competion_participant(competition_id,listparticpants , list_postions_id ,lists_disiplines)
