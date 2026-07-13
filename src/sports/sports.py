@@ -60,6 +60,9 @@ def generarScript():
         "BOLICHE":[
             "BOLICHE"
         ],
+        "BÉISBOL":[
+            "BÉISBOL"
+        ],
         "BOXEO":[
             "BOXEO"
         ],
@@ -164,6 +167,33 @@ def generarScript():
         "VOLEIBOL":[
             "VOLEIBOL PLAYA",
             "VOLEIBOL SALA"
+        ],
+        "PERSONAL":[
+            "PERSONAL ADMINISTRATIVO",
+            "PERSONAL MÉDICO",
+            "PERSONAL TÉCNICO"
+        ],
+        "SEGURIDAD":[
+            "SEGURIDAD"
+        ],
+        "DEPORTE SEGURO":[
+            "DEPORTE SEGURO"
+        ],
+        "ATACHÉ":[
+            "ATACHÉ PRENSA",
+            "ATACHÉ CENTOAM",
+        ],
+        "JEFE DE MISIÓN":[
+            "JEFE DE MISIÓN"
+        ],
+        "SUBJEFE DE MISIÓN":[
+            "SUBJEFE DE MISIÓN"
+        ],
+        "PRESIDENTA COM":[
+            "PRESIDENTA COM"
+        ],
+        "SECRETARIO G. COM":[
+            "SECRETARIO G. COM"
         ]
     }
 
